@@ -1,25 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import AddUser from './components/User/AddUser';
+import UserList from './components/User/UserList';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [userList, setUserList] = useState([]);
+    const [editingUser, setEditingUser] = useState(null);
+
+    const addUserHandler = (uName, uAge) => {
+        if (editingUser) {
+            const updatedUserList = userList.map(user => {
+                if (user.id === editingUser.id) {
+                    return { ...user, name: uName, age: uAge };
+                }
+                return user;
+            });
+            setUserList(updatedUserList);
+            setEditingUser(null);
+        } else {
+            setUserList((prevUserList) => {
+                return [...prevUserList, { name: uName, age: uAge, id: Math.random().toString() }];
+            });
+        }
+    };
+    const deleteUserHandler = (userId) => {
+        setUserList((prevUserList) => {
+            return prevUserList.filter(user => user.id !== userId);
+        });
+    };
+
+    const startEditHandler = (user) => {
+        startEditHandler(user);
+    };
+
+    return (
+        <div>
+            <AddUser onAddUser={addUserHandler} editingUser={editingUser}/>
+            <UserList users={userList} onDeleteUser={deleteUserHandler} onStartEditing={startEditHandler} />
+        </div>
+    );
 }
 
 export default App;
