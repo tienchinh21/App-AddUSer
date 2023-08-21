@@ -22,6 +22,7 @@ function App() {
             });
         }
     };
+
     const deleteUserHandler = (userId) => {
         setUserList((prevUserList) => {
             return prevUserList.filter(user => user.id !== userId);
@@ -29,7 +30,7 @@ function App() {
     };
 
     const startEditHandler = (user) => {
-        startEditHandler(user);
+        setEditingUser(user);
     };
 
     return (
